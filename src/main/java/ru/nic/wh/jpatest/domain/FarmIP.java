@@ -3,16 +3,9 @@ package ru.nic.wh.jpatest.domain;
 import org.hibernate.annotations.Type;
 import ru.nic.wh.jpatest.repository.Inet;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "farmip")
@@ -31,12 +24,22 @@ public class FarmIP {
 	@Column(name = "ip")
 	private Inet ip;
 
+	@ManyToMany
+	@JoinTable(name = "brand_farmip", joinColumns = @JoinColumn(name = "farmip_id"),
+			inverseJoinColumns = @JoinColumn(name = "brand_id"))
+	private List<Brand> brandList;
+
 	protected FarmIP() {
 	}
 
 	public FarmIP(String ip, FarmIPType farmipType) {
 		this.ip = new Inet(ip);
 		this.farmipType = farmipType;
+		this.brandList = new ArrayList<>();
+	}
+
+	public void addBrand(Brand brand) {
+		this.brandList.add(brand);
 	}
 
 	public Long getId() {
@@ -57,5 +60,13 @@ public class FarmIP {
 
 	public void setIp(Inet ip) {
 		this.ip = ip;
+	}
+
+	public List<Brand> getBrandList() {
+		return brandList;
+	}
+
+	public void setBrandList(List<Brand> brandList) {
+		this.brandList = brandList;
 	}
 }
