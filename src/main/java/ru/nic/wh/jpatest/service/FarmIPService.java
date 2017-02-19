@@ -11,6 +11,7 @@ import ru.nic.wh.jpatest.domain.FarmIP;
 import ru.nic.wh.jpatest.domain.FarmIPType;
 import ru.nic.wh.jpatest.repository.FarmIPRepository;
 import ru.nic.wh.jpatest.repository.FarmIPTypeRepository;
+import ru.nic.wh.jpatest.repository.Inet;
 import ru.nic.wh.jpatest.web.dto.FarmIPDTO;
 
 @Service
@@ -40,5 +41,11 @@ public class FarmIPService {
 		FarmIPType farmIPType = farmipTypeRepository.findByName(farmipDTO.getFarmIpTypeName());
 		FarmIP farmip = new FarmIP(farmipDTO.getIp(), farmIPType);
 		farmipRepository.save(farmip);
+	}
+
+	public void update(FarmIPDTO farmIPDTO, String ipAddress) {
+		FarmIP farmIP = farmipRepository.findByIp(new Inet(ipAddress));
+		farmIP.setIp(new Inet(farmIPDTO.getIp()));
+		farmipRepository.save(farmIP);
 	}
 }
