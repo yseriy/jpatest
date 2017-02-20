@@ -24,20 +24,20 @@ public class FarmIPAssembler {
 		this.farmIPTypeRepository = farmIPTypeRepository;
 	}
 
-//	public FarmIP createFarmIP(FarmIPCreateDTO farmIPCreateDTO) {
-//		FarmIPType farmIPType = null;
-//		String ipAddress = null;
-//
-//		if (farmIPCreateDTO.getFarmIpTypeName() != null) {
-//			farmIPType = getFarmIPType(farmIPCreateDTO.getFarmIpTypeName());
-//		}
-//
-//		if (farmIPCreateDTO.getIp() != null) {
-//			ipAddress = farmIPCreateDTO.getIp();
-//		}
-//
-//		return new FarmIP(ipAddress, farmIPType);
-//	}
+	public FarmIP createFarmIP(FarmIPCreateDTO farmIPCreateDTO) {
+		FarmIPType farmIPType = null;
+		String ipAddress = null;
+
+		if (farmIPCreateDTO.getFarmIpTypeName() != null) {
+			farmIPType = getFarmIPType(farmIPCreateDTO.getFarmIpTypeName());
+		}
+
+		if (farmIPCreateDTO.getIp() != null) {
+			ipAddress = farmIPCreateDTO.getIp();
+		}
+
+		return new FarmIP(ipAddress, farmIPType);
+	}
 
 	public FarmIP updateFarmIP(FarmIPDTO farmIPDTO, String ipAddress) {
 		FarmIP farmIP = farmIPRepository.findByIp(new Inet(ipAddress));
