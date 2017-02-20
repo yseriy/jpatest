@@ -25,7 +25,7 @@ public class FarmIP {
 	private Inet ip;
 
 	@ManyToMany
-	@JoinTable(name = "brand_farmip", joinColumns = @JoinColumn(name = "farmip_id"),
+	@JoinTable(name = "brand_farmip_link", joinColumns = @JoinColumn(name = "farmip_id"),
 			inverseJoinColumns = @JoinColumn(name = "brand_id"))
 	private List<Brand> brandList;
 
