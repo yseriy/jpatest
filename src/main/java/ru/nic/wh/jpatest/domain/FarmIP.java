@@ -9,11 +9,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "farmip")
-@SequenceGenerator(name = "farmip_gen", sequenceName = "farmip_id_seq")
 public class FarmIP {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "farmip_gen")
+	@SequenceGenerator(name = "farmip_gen", sequenceName = "farmip_id_seq", allocationSize = 1)
 	private Long id;
 
 	@ManyToOne

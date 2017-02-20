@@ -10,11 +10,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "farmip_type")
-@SequenceGenerator(name = "farmip_type_gen", sequenceName = "farmip_type_id_seq")
 public class FarmIPType {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "farmip_type_gen")
+	@SequenceGenerator(name = "farmip_type_gen", sequenceName = "farmip_type_id_seq", allocationSize = 1)
 	private Long id;
 
 	@Column(name = "name")
