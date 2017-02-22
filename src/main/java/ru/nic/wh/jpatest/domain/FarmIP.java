@@ -16,13 +16,17 @@ public class FarmIP {
 	@SequenceGenerator(name = "farmip_gen", sequenceName = "farmip_id_seq", allocationSize = 1)
 	private Long id;
 
+	@Type(type = "ru.nic.wh.jpatest.repository.usertype.InetType")
+	@Column(name = "ip")
+	private Inet ip;
+
 	@ManyToOne
 	@JoinColumn(name = "farmip_type_id", foreignKey = @ForeignKey(name = "farmip_farmip_type_id_fkey"))
 	private FarmIPType farmipType;
 
-	@Type(type = "ru.nic.wh.jpatest.repository.usertype.InetType")
-	@Column(name = "ip")
-	private Inet ip;
+	@ManyToOne
+	@JoinColumn(name = "farm_id", foreignKey = @ForeignKey(name = "farmip_farm_id_fkey"))
+	private Farm farm;
 
 	@ManyToMany
 	@JoinTable(name = "brand_farmip_link", joinColumns = @JoinColumn(name = "farmip_id"),
@@ -32,10 +36,15 @@ public class FarmIP {
 	protected FarmIP() {
 	}
 
-	public FarmIP(String ip, FarmIPType farmipType) {
+	public FarmIP(String ip, FarmIPType farmIPType) {
 		this.ip = new Inet(ip);
-		this.farmipType = farmipType;
+		this.farmipType = farmIPType;
 		this.brandList = new ArrayList<>();
+	}
+
+	public FarmIP(String ip, FarmIPType farmipType, Farm farm) {
+		this(ip, farmipType);
+		this.farm = farm;
 	}
 
 	public void addBrand(Brand brand) {
@@ -46,6 +55,14 @@ public class FarmIP {
 		return id;
 	}
 
+	public Inet getIp() {
+		return ip;
+	}
+
+	public void setIp(Inet ip) {
+		this.ip = ip;
+	}
+
 	public FarmIPType getFarmipType() {
 		return farmipType;
 	}
@@ -54,12 +71,12 @@ public class FarmIP {
 		this.farmipType = farmipType;
 	}
 
-	public Inet getIp() {
-		return ip;
+	public Farm getFarm() {
+		return farm;
 	}
 
-	public void setIp(Inet ip) {
-		this.ip = ip;
+	public void setFarm(Farm farm) {
+		this.farm = farm;
 	}
 
 	public List<Brand> getBrandList() {
