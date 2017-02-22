@@ -1,7 +1,7 @@
 package ru.nic.wh.jpatest.domain;
 
 import org.hibernate.annotations.Type;
-import ru.nic.wh.jpatest.repository.Inet;
+import ru.nic.wh.jpatest.repository.usertype.Inet;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class FarmIP {
 	@JoinColumn(name = "farmip_type_id", foreignKey = @ForeignKey(name = "farmip_farmip_type_id_fkey"))
 	private FarmIPType farmipType;
 
-	@Type(type = "ru.nic.wh.jpatest.repository.InetType")
+	@Type(type = "ru.nic.wh.jpatest.repository.usertype.InetType")
 	@Column(name = "ip")
 	private Inet ip;
 
