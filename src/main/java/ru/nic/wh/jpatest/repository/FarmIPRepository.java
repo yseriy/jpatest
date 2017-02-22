@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import ru.nic.wh.jpatest.domain.FarmIP;
+import ru.nic.wh.jpatest.repository.usertype.Inet;
 
 @Repository
 public interface FarmIPRepository extends CrudRepository<FarmIP, Long> {

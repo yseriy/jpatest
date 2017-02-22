@@ -1,4 +1,4 @@
-package ru.nic.wh.jpatest.web;
+package ru.nic.wh.jpatest.web.assembler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -7,7 +7,7 @@ import ru.nic.wh.jpatest.domain.FarmIPType;
 import ru.nic.wh.jpatest.exception.ObjectNotFoundException;
 import ru.nic.wh.jpatest.repository.FarmIPRepository;
 import ru.nic.wh.jpatest.repository.FarmIPTypeRepository;
-import ru.nic.wh.jpatest.repository.Inet;
+import ru.nic.wh.jpatest.repository.usertype.Inet;
 import ru.nic.wh.jpatest.web.dto.FarmIPCreateDTO;
 import ru.nic.wh.jpatest.web.dto.FarmIPDTO;
 

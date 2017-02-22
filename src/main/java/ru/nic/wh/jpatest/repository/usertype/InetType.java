@@ -1,4 +1,4 @@
-package ru.nic.wh.jpatest.repository;
+package ru.nic.wh.jpatest.repository.usertype;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
