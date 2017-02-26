@@ -1,6 +1,9 @@
 package ru.nic.wh.jpatest.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nic.wh.jpatest.domain.Farm;
@@ -37,38 +40,34 @@ public class FarmService {
 		this.farmIPService = farmIPService;
 	}
 
-	public List<FarmDTO> list() {
-		PersistenceUtil persistenceUtil = Persistence.getPersistenceUtil();
-		List<Farm> farmList = farmRepository.findAllWithLocationAndFarmType();
-		List<FarmDTO> farmDTOList = new ArrayList<>();
+	public Page<FarmDTO> list(Pageable pageable) {
+		Page<Farm> farmPage = farmRepository.findAllWithLocationAndFarmType(pageable);
 
-		for (Farm farm : farmList) {
-
-			FarmDTO farmDTO = new FarmDTO();
-			farmDTO.setName(farm.getName());
-			farmDTO.setCapacity(farm.getCapacity());
-
-			if (persistenceUtil.isLoaded(farm.getLocation()) && farm.getLocation() != null) {
-				farmDTO.setLocationName(farm.getLocation().getName());
-			}
-
-			if (persistenceUtil.isLoaded(farm.getFarmType()) && farm.getFarmType() != null) {
-				farmDTO.setFarmtypeName(farm.getFarmType().getName());
-			}
-
-			farmDTOList.add(farmDTO);
-		}
-
-		return farmDTOList;
+		return new PageImpl<>(toDTO(farmPage.getContent()), pageable, farmPage.getTotalElements());
 	}
 
 	public FarmDTO listByName(String farmName) {
-		PersistenceUtil persistenceUtil = Persistence.getPersistenceUtil();
 		Farm farm = farmRepository.findWithLocationAndFarmTypeByName(farmName);
 
 		if (farm == null) {
 			throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
 		}
+
+		return toDTO(farm);
+	}
+
+	private List<FarmDTO> toDTO(List<Farm> farmList) {
+		List<FarmDTO> farmDTOList = new ArrayList<>();
+
+		for (Farm farm : farmList) {
+			farmDTOList.add(toDTO(farm));
+		}
+
+		return farmDTOList;
+	}
+
+	private FarmDTO toDTO(Farm farm) {
+		PersistenceUtil persistenceUtil = Persistence.getPersistenceUtil();
 
 		FarmDTO farmDTO = new FarmDTO();
 		farmDTO.setName(farm.getName());

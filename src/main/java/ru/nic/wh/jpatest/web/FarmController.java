@@ -1,6 +1,8 @@
 package ru.nic.wh.jpatest.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +27,8 @@ public class FarmController {
 	}
 
 	@GetMapping("/farms")
-	public List<FarmDTO> listFarm() {
-		return farmService.list();
+	public Page<FarmDTO> listFarm(Pageable pageable) {
+		return farmService.list(pageable);
 	}
 
 	@GetMapping("/farms/{farmName}")
