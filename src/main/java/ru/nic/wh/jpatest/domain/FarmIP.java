@@ -1,12 +1,14 @@
 package ru.nic.wh.jpatest.domain;
 
+import lombok.Data;
 import org.hibernate.annotations.Type;
-import ru.nic.wh.jpatest.repository.usertype.Inet;
+import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "farmip")
 public class FarmIP {
@@ -16,15 +18,15 @@ public class FarmIP {
 	@SequenceGenerator(name = "farmip_gen", sequenceName = "farmip_id_seq", allocationSize = 1)
 	private Long id;
 
-	@Type(type = "ru.nic.wh.jpatest.repository.usertype.InetType")
+	@Type(type = "ru.nic.wh.jpatest.miscellaneous.usertype.InetType")
 	@Column(name = "ip")
 	private Inet ip;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "farmip_type_id", foreignKey = @ForeignKey(name = "farmip_farmip_type_id_fkey"))
 	private FarmIPType farmipType;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "farm_id", foreignKey = @ForeignKey(name = "farmip_farm_id_fkey"))
 	private Farm farm;
 
@@ -36,7 +38,7 @@ public class FarmIP {
 	protected FarmIP() {
 	}
 
-	public FarmIP(String ip, FarmIPType farmIPType) {
+	private FarmIP(String ip, FarmIPType farmIPType) {
 		this.ip = new Inet(ip);
 		this.farmipType = farmIPType;
 		this.brandList = new ArrayList<>();
@@ -49,41 +51,5 @@ public class FarmIP {
 
 	public void addBrand(Brand brand) {
 		this.brandList.add(brand);
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public Inet getIp() {
-		return ip;
-	}
-
-	public void setIp(Inet ip) {
-		this.ip = ip;
-	}
-
-	public FarmIPType getFarmipType() {
-		return farmipType;
-	}
-
-	public void setFarmipType(FarmIPType farmipType) {
-		this.farmipType = farmipType;
-	}
-
-	public Farm getFarm() {
-		return farm;
-	}
-
-	public void setFarm(Farm farm) {
-		this.farm = farm;
-	}
-
-	public List<Brand> getBrandList() {
-		return brandList;
-	}
-
-	public void setBrandList(List<Brand> brandList) {
-		this.brandList = brandList;
 	}
 }
