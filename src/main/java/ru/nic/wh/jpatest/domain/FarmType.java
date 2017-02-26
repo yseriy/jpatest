@@ -1,7 +1,10 @@
 package ru.nic.wh.jpatest.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "farm_type")
 public class FarmType {
@@ -18,18 +21,6 @@ public class FarmType {
 	}
 
 	public FarmType(String name) {
-		this.name = name;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
 		this.name = name;
 	}
 }

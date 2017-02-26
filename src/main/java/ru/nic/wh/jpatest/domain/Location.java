@@ -1,7 +1,10 @@
 package ru.nic.wh.jpatest.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "location")
 public class Location {
@@ -18,18 +21,6 @@ public class Location {
 	}
 
 	public Location(String name) {
-		this.name = name;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
 		this.name = name;
 	}
 }

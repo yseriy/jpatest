@@ -1,4 +1,4 @@
-package ru.nic.wh.jpatest.repository.usertype;
+package ru.nic.wh.jpatest.miscellaneous.usertype;
 
 import java.io.Serializable;
 
