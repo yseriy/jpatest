@@ -5,7 +5,6 @@ import org.hibernate.annotations.Type;
 import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
