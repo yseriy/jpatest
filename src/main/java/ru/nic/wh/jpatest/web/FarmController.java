@@ -14,11 +14,15 @@ import ru.nic.wh.jpatest.service.FarmService;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 public class FarmController {
 
 	private final FarmService farmService;
 	private final FarmIPService farmIPService;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	public FarmController(FarmService farmService, FarmIPService farmIPService) {
