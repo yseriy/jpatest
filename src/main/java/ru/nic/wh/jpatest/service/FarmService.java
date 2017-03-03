@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nic.wh.jpatest.domain.Farm;
 import ru.nic.wh.jpatest.domain.FarmType;
+import ru.nic.wh.jpatest.domain.IPNet;
 import ru.nic.wh.jpatest.domain.Location;
 import ru.nic.wh.jpatest.dto.FarmDTO;
 import ru.nic.wh.jpatest.dto.FarmIPDTO;
+import ru.nic.wh.jpatest.dto.IPNetDTO;
 import ru.nic.wh.jpatest.exception.ObjectNotFoundException;
+import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
 import ru.nic.wh.jpatest.repository.FarmRepository;
 import ru.nic.wh.jpatest.repository.FarmTypeRepository;
+import ru.nic.wh.jpatest.repository.IPNetRepository;
 import ru.nic.wh.jpatest.repository.LocationRepository;
 
 import javax.persistence.Persistence;
@@ -28,15 +32,18 @@ public class FarmService {
 	private final FarmRepository farmRepository;
 	private final LocationRepository locationRepository;
 	private final FarmTypeRepository farmTypeRepository;
+	private final IPNetRepository ipNetRepository;
 	private final FarmIPService farmIPService;
 
 	@Autowired
 	public FarmService(FarmRepository farmRepository, LocationRepository locationRepository,
-					   FarmTypeRepository farmTypeRepository, FarmIPService farmIPService) {
+					   FarmTypeRepository farmTypeRepository, IPNetRepository ipNetRepository,
+					   FarmIPService farmIPService) {
 
 		this.farmRepository = farmRepository;
 		this.locationRepository = locationRepository;
 		this.farmTypeRepository = farmTypeRepository;
+		this.ipNetRepository = ipNetRepository;
 		this.farmIPService = farmIPService;
 	}
 
@@ -139,7 +146,37 @@ public class FarmService {
 		if (farmDTO.getCapacity() != null) {
 			farm.setCapacity(farmDTO.getCapacity());
 		}
+	}
 
-		farmRepository.save(farm);
+	public void addIPNet(IPNetDTO ipNetDTO, String farmName) {
+		Farm farm = farmRepository.findByName(farmName);
+
+		if (farm == null) {
+			throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+		}
+
+		IPNet ipNet = ipNetRepository.findByNet(new Inet(ipNetDTO.getNetAddress()));
+
+		if (ipNet == null) {
+			throw new ObjectNotFoundException("IPNet '" + ipNetDTO.getNetAddress() + "' not found");
+		}
+
+		farm.getIpNetSet().add(ipNet);
+	}
+
+	public void removeIPNet(String netAddress, String farmName) {
+		Farm farm = farmRepository.findByName(farmName);
+
+		if (farm == null) {
+			throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+		}
+
+		IPNet ipNet = ipNetRepository.findByNet(new Inet(netAddress));
+
+		if (ipNet == null) {
+			throw new ObjectNotFoundException("IPNet '" + netAddress + "' not found");
+		}
+
+		farm.getIpNetSet().remove(ipNet);
 	}
 }
