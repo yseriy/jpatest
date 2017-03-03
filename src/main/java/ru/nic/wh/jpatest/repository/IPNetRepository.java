@@ -10,6 +10,9 @@ import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
 @Repository
 public interface IPNetRepository extends PagingAndSortingRepository<IPNet, Long> {
 
+	@Query("select i from IPNet i left join fetch i.ipNetType left join fetch i.brandList where i.net = :net")
+	IPNet findByNetWithTypeAndBrand(@Param("net") Inet inet);
+
 	@Query("select i from IPNet i where i.net = :net")
 	IPNet findByNet(@Param("net") Inet net);
 }

@@ -5,7 +5,8 @@ import org.hibernate.annotations.Type;
 import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -28,7 +29,7 @@ public class IPNet {
 	@ManyToMany
 	@JoinTable(name = "brand_ipnet_link", joinColumns = @JoinColumn(name = "ipnet_id"),
 			inverseJoinColumns = @JoinColumn(name = "brand_id"))
-	private List<Brand> brandList;
+	private Set<Brand> brandList;
 
 	protected IPNet() {
 	}
@@ -36,5 +37,14 @@ public class IPNet {
 	public IPNet(String netAddress, IPNetType ipNetType) {
 		this.net = new Inet(netAddress);
 		this.ipNetType = ipNetType;
+		this.brandList = new HashSet<>();
+	}
+
+	public void addBrand(Brand brand) {
+		brandList.add(brand);
+	}
+
+	public void removeBrand(Brand brand) {
+		brandList.remove(brand);
 	}
 }
