@@ -7,12 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.nic.wh.jpatest.dto.BrandDTO;
-import ru.nic.wh.jpatest.dto.FarmDTO;
 import ru.nic.wh.jpatest.dto.IPNetDTO;
 import ru.nic.wh.jpatest.miscellaneous.validationgroups.NotNullGroup;
 import ru.nic.wh.jpatest.service.IPNetService;
-
-import java.util.List;
 
 @RestController
 public class IPNetController {

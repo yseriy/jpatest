@@ -1,8 +1,5 @@
 package ru.nic.wh.jpatest.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,9 +19,7 @@ public class FarmController {
 
 	private final FarmService farmService;
 	private final FarmIPService farmIPService;
-	private static final Logger logger = LoggerFactory.getLogger(FarmController.class);
 
-	@Autowired
 	public FarmController(FarmService farmService, FarmIPService farmIPService) {
 		this.farmService = farmService;
 		this.farmIPService = farmIPService;

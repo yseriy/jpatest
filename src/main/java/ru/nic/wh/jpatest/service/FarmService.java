@@ -1,6 +1,5 @@
 package ru.nic.wh.jpatest.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +34,6 @@ public class FarmService {
 	private final IPNetRepository ipNetRepository;
 	private final FarmIPService farmIPService;
 
-	@Autowired
 	public FarmService(FarmRepository farmRepository, LocationRepository locationRepository,
 					   FarmTypeRepository farmTypeRepository, IPNetRepository ipNetRepository,
 					   FarmIPService farmIPService) {

@@ -1,6 +1,5 @@
 package ru.nic.wh.jpatest.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +31,6 @@ public class IPNetService {
 	private final IPNetTypeRepository ipNetTypeRepository;
 	private final BrandRepository brandRepository;
 
-	@Autowired
 	public IPNetService(IPNetRepository ipNetRepository, IPNetTypeRepository ipNetTypeRepository,
 						BrandRepository brandRepository) {
 
