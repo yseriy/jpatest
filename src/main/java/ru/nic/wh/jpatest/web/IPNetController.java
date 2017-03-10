@@ -22,7 +22,7 @@ public class IPNetController {
 	}
 
 	@GetMapping("/ipnets")
-	public Page<IPNetDTO> listFarm(Pageable pageable) {
+	public Page<IPNetDTO> listAll(Pageable pageable) {
 		return ipNetService.listAll(pageable);
 	}
 

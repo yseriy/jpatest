@@ -22,7 +22,7 @@ public class IPNet {
 	@Column(name = "net")
 	private Inet net;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ipnet_type_id", foreignKey = @ForeignKey(name = "ipnet_ipnet_type_id_fkey"))
 	private IPNetType ipNetType;
 

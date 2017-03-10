@@ -40,7 +40,7 @@ public class IPNetService {
 	}
 
 	public Page<IPNetDTO> listAll(Pageable pageable) {
-		Page<IPNet> ipNetPage = ipNetRepository.findAll(pageable);
+		Page<IPNet> ipNetPage = ipNetRepository.findAllWithType(pageable);
 
 		return new PageImpl<>(toDTO(ipNetPage.getContent()), pageable, ipNetPage.getTotalElements());
 	}
