@@ -1,6 +1,5 @@
 package ru.nic.wh.jpatest.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -8,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.nic.wh.jpatest.dto.FarmDTO;
 import ru.nic.wh.jpatest.dto.FarmIPDTO;
+import ru.nic.wh.jpatest.dto.IPNetDTO;
 import ru.nic.wh.jpatest.miscellaneous.validationgroups.NotNullGroup;
 import ru.nic.wh.jpatest.service.FarmIPService;
 import ru.nic.wh.jpatest.service.FarmService;
@@ -20,7 +20,6 @@ public class FarmController {
 	private final FarmService farmService;
 	private final FarmIPService farmIPService;
 
-	@Autowired
 	public FarmController(FarmService farmService, FarmIPService farmIPService) {
 		this.farmService = farmService;
 		this.farmIPService = farmIPService;
@@ -57,6 +56,16 @@ public class FarmController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addIP(@Validated(NotNullGroup.class) @RequestBody FarmIPDTO farmIPDTO, @PathVariable String farmName) {
 		farmIPService.create(farmIPDTO, farmName);
+	}
+
+	@PostMapping("/farms/{farmName}/ipnet")
+	public void addIPNet(@Validated @RequestBody IPNetDTO ipNetDTO, @PathVariable String farmName) {
+		farmService.addIPNet(ipNetDTO, farmName);
+	}
+
+	@DeleteMapping("/farms/{farmName}/ipnet/{netAddress:.+}")
+	public void removeIPNet(@PathVariable String netAddress, @PathVariable String farmName) {
+		farmService.removeIPNet(netAddress, farmName);
 	}
 
 	@DeleteMapping("/farms/{farmName}/ip/{ipAddress:.+}")

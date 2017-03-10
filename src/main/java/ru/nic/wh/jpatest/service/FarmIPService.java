@@ -1,6 +1,5 @@
 package ru.nic.wh.jpatest.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nic.wh.jpatest.domain.Brand;
@@ -30,7 +29,6 @@ public class FarmIPService {
 	private final FarmRepository farmRepository;
 	private final BrandRepository brandRepository;
 
-	@Autowired
 	public FarmIPService(FarmIPRepository farmipRepository, FarmIPTypeRepository farmIPTypeRepository,
 						 FarmRepository farmRepository, BrandRepository brandRepository) {
 

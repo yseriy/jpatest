@@ -3,7 +3,7 @@ package ru.nic.wh.jpatest.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -30,7 +30,11 @@ public class Farm {
 	private FarmType farmType;
 
 	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<FarmIP> farmIP;
+	private Set<FarmIP> farmIPSet;
+
+	@ManyToMany
+	@JoinTable(name = "farm_ipnet_link", inverseJoinColumns = @JoinColumn(name = "ipnet_id"))
+	private Set<IPNet> ipNetSet;
 
 	protected Farm() {
 	}
