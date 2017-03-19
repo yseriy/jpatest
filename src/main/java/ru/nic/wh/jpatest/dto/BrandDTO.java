@@ -12,6 +12,6 @@ import javax.validation.constraints.Size;
 public class BrandDTO {
 
     @Size(min = 1)
-    @NotNull(groups = NotNullClass.class)
+    @NotNull
     private String name;
 }

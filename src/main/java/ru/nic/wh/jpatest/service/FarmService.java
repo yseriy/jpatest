@@ -146,35 +146,35 @@ public class FarmService {
         }
     }
 
-    public void addIPNet(IPNetDTO ipNetDTO, String farmName) {
-        Farm farm = farmRepository.findByName(farmName);
-
-        if (farm == null) {
-            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
-        }
-
-        IPNet ipNet = ipNetRepository.findByNet(new Inet(ipNetDTO.getNetAddress()));
-
-        if (ipNet == null) {
-            throw new ObjectNotFoundException("IPNet '" + ipNetDTO.getNetAddress() + "' not found");
-        }
-
-        farm.getIpNetSet().add(ipNet);
-    }
-
-    public void removeIPNet(String netAddress, String farmName) {
-        Farm farm = farmRepository.findByName(farmName);
-
-        if (farm == null) {
-            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
-        }
-
-        IPNet ipNet = ipNetRepository.findByNet(new Inet(netAddress));
-
-        if (ipNet == null) {
-            throw new ObjectNotFoundException("IPNet '" + netAddress + "' not found");
-        }
-
-        farm.getIpNetSet().remove(ipNet);
-    }
+//    public void addIPNet(IPNetDTO ipNetDTO, String farmName) {
+//        Farm farm = farmRepository.findByName(farmName);
+//
+//        if (farm == null) {
+//            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+//        }
+//
+//        IPNet ipNet = ipNetRepository.findByNet(new Inet(ipNetDTO.getNetAddress()));
+//
+//        if (ipNet == null) {
+//            throw new ObjectNotFoundException("IPNet '" + ipNetDTO.getNetAddress() + "' not found");
+//        }
+//
+//        farm.getIpNetSet().add(ipNet);
+//    }
+//
+//    public void removeIPNet(String netAddress, String farmName) {
+//        Farm farm = farmRepository.findByName(farmName);
+//
+//        if (farm == null) {
+//            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+//        }
+//
+//        IPNet ipNet = ipNetRepository.findByNet(new Inet(netAddress));
+//
+//        if (ipNet == null) {
+//            throw new ObjectNotFoundException("IPNet '" + netAddress + "' not found");
+//        }
+//
+//        farm.getIpNetSet().remove(ipNet);
+//    }
 }

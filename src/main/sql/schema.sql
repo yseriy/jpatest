@@ -79,11 +79,14 @@ CREATE TABLE farmip (
 CREATE UNIQUE INDEX farmip_unique_ip_index
   ON farmip (ip);
 
-CREATE TABLE brand_farmip_link (
+CREATE TABLE brand_farmip (
+  id        BIGSERIAL PRIMARY KEY,
   brand_id  BIGINT REFERENCES brand (id),
-  farmip_id BIGINT REFERENCES farmip (id),
-  PRIMARY KEY (brand_id, farmip_id)
+  farmip_id BIGINT REFERENCES farmip (id)
 );
+
+CREATE UNIQUE INDEX brand_farmip_unique_index
+  ON brand_farmip (brand_id, farmip_id);
 
 CREATE TABLE brand_ipnet (
   id       BIGSERIAL PRIMARY KEY,
@@ -94,15 +97,14 @@ CREATE TABLE brand_ipnet (
 CREATE UNIQUE INDEX brand_ipnet_unique_index
   ON brand_ipnet (brand_id, ipnet_id);
 
-CREATE TABLE brand_ipnet_farm (
+CREATE TABLE farm_ipnet (
   id       BIGSERIAL PRIMARY KEY,
-  brand_id BIGINT REFERENCES brand (id),
-  ipnet_id BIGINT REFERENCES ipnet (id),
-  farm_id  BIGINT REFERENCES farm (id)
+  farm_id  BIGINT REFERENCES farm (id),
+  ipnet_id BIGINT REFERENCES ipnet (id)
 );
 
-CREATE UNIQUE INDEX brand_ipnet_farm_unique_index
-  ON brand_ipnet_farm (brand_id, ipnet_id, farm_id);
+CREATE UNIQUE INDEX farm_ipnet_unique_index
+  ON farm_ipnet (farm_id, ipnet_id);
 
 CREATE TABLE tariff_farm_type (
   tariff_id    BIGINT REFERENCES tariff (id),

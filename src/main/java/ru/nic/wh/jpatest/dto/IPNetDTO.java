@@ -22,6 +22,5 @@ public class IPNetDTO {
     private String ipnetTypeName;
 
     @Valid
-    @NotNull(groups = NotNullClass.class)
     private List<BrandDTO> brandList;
 }

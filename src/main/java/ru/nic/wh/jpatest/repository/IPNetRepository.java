@@ -16,9 +16,9 @@ public interface IPNetRepository extends PagingAndSortingRepository<IPNet, Long>
             countQuery = "select i from IPNet i left join i.ipNetType")
     Page<IPNet> findAllWithType(Pageable pageable);
 
-    @Query("select i from IPNet i left join fetch i.ipNetType left join fetch i.brandList where i.net = :net")
-    IPNet findByNetWithTypeAndBrand(@Param("net") Inet inet);
-
     @Query("select i from IPNet i where i.net = :net")
     IPNet findByNet(@Param("net") Inet net);
+
+    @Query("select i from IPNet i left join fetch i.ipNetType left join fetch i.brandIPNetList bl left join fetch bl.brand where i.net = :net")
+    IPNet findByNetWithTypeAndBrand(@Param("net") Inet inet);
 }

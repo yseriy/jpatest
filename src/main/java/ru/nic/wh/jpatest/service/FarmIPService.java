@@ -57,9 +57,9 @@ public class FarmIPService {
                 farmIPDTO.setFarmIpTypeName(farmIP.getFarmipType().getName());
             }
 
-            if (persistenceUtil.isLoaded(farmIP.getBrandList()) && farmIP.getBrandList() != null) {
-                farmIPDTO.setBrandList(setBrandDTOList(farmIP.getBrandList()));
-            }
+//            if (persistenceUtil.isLoaded(farmIP.getBrandList()) && farmIP.getBrandList() != null) {
+//                farmIPDTO.setBrandList(setBrandDTOList(farmIP.getBrandList()));
+//            }
 
             farmIPDTOList.add(farmIPDTO);
         }
@@ -90,7 +90,6 @@ public class FarmIPService {
     }
 
     void create(FarmIPDTO farmIPDTO, Farm farm) {
-
         FarmIPType farmIPType = farmIPTypeRepository.findByName(farmIPDTO.getFarmIpTypeName());
 
         if (farmIPType == null) {
@@ -135,8 +134,6 @@ public class FarmIPService {
         if (farmIPDTO.getIp() != null) {
             farmIP.setIp(new Inet(farmIPDTO.getIp()));
         }
-
-        farmipRepository.save(farmIP);
     }
 
     public void delete(String ipAddress) {

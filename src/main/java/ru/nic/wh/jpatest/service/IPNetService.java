@@ -6,12 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nic.wh.jpatest.domain.Brand;
+import ru.nic.wh.jpatest.domain.BrandIPNet;
 import ru.nic.wh.jpatest.domain.IPNet;
 import ru.nic.wh.jpatest.domain.IPNetType;
 import ru.nic.wh.jpatest.dto.BrandDTO;
 import ru.nic.wh.jpatest.dto.IPNetDTO;
 import ru.nic.wh.jpatest.exception.ObjectNotFoundException;
 import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
+import ru.nic.wh.jpatest.repository.BrandIPNetRepository;
 import ru.nic.wh.jpatest.repository.BrandRepository;
 import ru.nic.wh.jpatest.repository.IPNetRepository;
 import ru.nic.wh.jpatest.repository.IPNetTypeRepository;
@@ -19,9 +21,7 @@ import ru.nic.wh.jpatest.repository.IPNetTypeRepository;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUtil;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -30,13 +30,15 @@ public class IPNetService {
     private final IPNetRepository ipNetRepository;
     private final IPNetTypeRepository ipNetTypeRepository;
     private final BrandRepository brandRepository;
+    private final BrandIPNetRepository brandIPNetRepository;
 
     public IPNetService(IPNetRepository ipNetRepository, IPNetTypeRepository ipNetTypeRepository,
-                        BrandRepository brandRepository) {
+                        BrandRepository brandRepository, BrandIPNetRepository brandIPNetRepository) {
 
         this.ipNetRepository = ipNetRepository;
         this.ipNetTypeRepository = ipNetTypeRepository;
         this.brandRepository = brandRepository;
+        this.brandIPNetRepository = brandIPNetRepository;
     }
 
     public Page<IPNetDTO> listAll(Pageable pageable) {
@@ -71,23 +73,23 @@ public class IPNetService {
         IPNetDTO ipNetDTO = new IPNetDTO();
         ipNetDTO.setNetAddress(ipNet.getNet().getAddress());
 
-        if (persistenceUtil.isLoaded(ipNet.getIpNetType()) && ipNet.getIpNetType() != null) {
+        if (persistenceUtil.isLoaded(ipNet.getIpNetType())) {
             ipNetDTO.setIpnetTypeName(ipNet.getIpNetType().getName());
         }
 
-        if (persistenceUtil.isLoaded(ipNet.getBrandList()) && ipNet.getBrandList() != null) {
-            setBrandList(ipNetDTO, ipNet.getBrandList());
+        if (persistenceUtil.isLoaded(ipNet.getBrandIPNetList())) {
+            setBrandListToDTO(ipNetDTO, ipNet.getBrandIPNetList());
         }
 
         return ipNetDTO;
     }
 
-    private void setBrandList(IPNetDTO ipNetDTO, Set<Brand> brandList) {
+    private void setBrandListToDTO(IPNetDTO ipNetDTO, List<BrandIPNet> brandIPNetList) {
         List<BrandDTO> brandDTOList = new ArrayList<>();
 
-        for (Brand brand : brandList) {
+        for (BrandIPNet brandIPNet : brandIPNetList) {
             BrandDTO brandDTO = new BrandDTO();
-            brandDTO.setName(brand.getName());
+            brandDTO.setName(brandIPNet.getBrand().getName());
             brandDTOList.add(brandDTO);
         }
 
@@ -102,17 +104,14 @@ public class IPNetService {
         }
 
         IPNet ipNet = new IPNet(ipNetDTO.getNetAddress(), ipNetType);
+        ipNetRepository.save(ipNet);
 
         if (ipNetDTO.getBrandList() != null) {
-            setBrand(ipNet, ipNetDTO.getBrandList());
+            getBrandListFromDTO(ipNet, ipNetDTO.getBrandList());
         }
-
-        ipNetRepository.save(ipNet);
     }
 
-    private void setBrand(IPNet ipNet, List<BrandDTO> brandDTOList) {
-        Set<Brand> brandList = new HashSet<>();
-
+    private void getBrandListFromDTO(IPNet ipNet, List<BrandDTO> brandDTOList) {
         for (BrandDTO brandDTO : brandDTOList) {
             Brand brand = brandRepository.findByName(brandDTO.getName());
 
@@ -120,10 +119,8 @@ public class IPNetService {
                 throw new ObjectNotFoundException("Brand '" + brandDTO.getName() + "' not found");
             }
 
-            brandList.add(brand);
+            ipNet.addBrand(brand);
         }
-
-        ipNet.setBrandList(brandList);
     }
 
     public void update(IPNetDTO ipNetDTO, String netAddress) {
@@ -177,6 +174,6 @@ public class IPNetService {
             throw new ObjectNotFoundException("Brand '" + brandName + "' not found");
         }
 
-        ipNet.removeBrand(brand);
+        brandIPNetRepository.DeleteBrandIPNetLink(brand, ipNet);
     }
 }
