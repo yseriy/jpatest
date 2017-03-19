@@ -13,15 +13,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class IPNetDTO {
 
-	@Size(min = 1)
-	@NotNull(groups = NotNullClass.class)
-	private String netAddress;
+    @Size(min = 1)
+    @NotNull(groups = NotNullClass.class)
+    private String netAddress;
 
-	@Size(min = 1)
-	@NotNull(groups = NotNullClass.class)
-	private String ipnetTypeName;
+    @Size(min = 1)
+    @NotNull(groups = NotNullClass.class)
+    private String ipnetTypeName;
 
-	@Valid
-	@NotNull(groups = NotNullClass.class)
-	private List<BrandDTO> brandList;
+    @Valid
+    @NotNull(groups = NotNullClass.class)
+    private List<BrandDTO> brandList;
 }

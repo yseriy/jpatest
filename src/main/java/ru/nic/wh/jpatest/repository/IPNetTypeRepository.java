@@ -9,6 +9,6 @@ import ru.nic.wh.jpatest.domain.IPNetType;
 @Repository
 public interface IPNetTypeRepository extends CrudRepository<IPNetType, Long> {
 
-	@Query("select ipt from IPNetType ipt where ipt.name = :name")
-	IPNetType findByName(@Param("name") String name);
+    @Query("select ipt from IPNetType ipt where ipt.name = :name")
+    IPNetType findByName(@Param("name") String name);
 }

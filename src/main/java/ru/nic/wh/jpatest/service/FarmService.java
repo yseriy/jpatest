@@ -28,153 +28,153 @@ import java.util.List;
 @Transactional
 public class FarmService {
 
-	private final FarmRepository farmRepository;
-	private final LocationRepository locationRepository;
-	private final FarmTypeRepository farmTypeRepository;
-	private final IPNetRepository ipNetRepository;
-	private final FarmIPService farmIPService;
+    private final FarmRepository farmRepository;
+    private final LocationRepository locationRepository;
+    private final FarmTypeRepository farmTypeRepository;
+    private final IPNetRepository ipNetRepository;
+    private final FarmIPService farmIPService;
 
-	public FarmService(FarmRepository farmRepository, LocationRepository locationRepository,
-					   FarmTypeRepository farmTypeRepository, IPNetRepository ipNetRepository,
-					   FarmIPService farmIPService) {
+    public FarmService(FarmRepository farmRepository, LocationRepository locationRepository,
+                       FarmTypeRepository farmTypeRepository, IPNetRepository ipNetRepository,
+                       FarmIPService farmIPService) {
 
-		this.farmRepository = farmRepository;
-		this.locationRepository = locationRepository;
-		this.farmTypeRepository = farmTypeRepository;
-		this.ipNetRepository = ipNetRepository;
-		this.farmIPService = farmIPService;
-	}
+        this.farmRepository = farmRepository;
+        this.locationRepository = locationRepository;
+        this.farmTypeRepository = farmTypeRepository;
+        this.ipNetRepository = ipNetRepository;
+        this.farmIPService = farmIPService;
+    }
 
-	public Page<FarmDTO> list(Pageable pageable) {
-		Page<Farm> farmPage = farmRepository.findAllWithLocationAndFarmType(pageable);
+    public Page<FarmDTO> list(Pageable pageable) {
+        Page<Farm> farmPage = farmRepository.findAllWithLocationAndFarmType(pageable);
 
-		return new PageImpl<>(toDTO(farmPage.getContent()), pageable, farmPage.getTotalElements());
-	}
+        return new PageImpl<>(toDTO(farmPage.getContent()), pageable, farmPage.getTotalElements());
+    }
 
-	public FarmDTO listByName(String farmName) {
-		Farm farm = farmRepository.findWithLocationAndFarmTypeByName(farmName);
+    public FarmDTO listByName(String farmName) {
+        Farm farm = farmRepository.findWithLocationAndFarmTypeByName(farmName);
 
-		if (farm == null) {
-			throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
-		}
+        if (farm == null) {
+            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+        }
 
-		return toDTO(farm);
-	}
+        return toDTO(farm);
+    }
 
-	private List<FarmDTO> toDTO(List<Farm> farmList) {
-		List<FarmDTO> farmDTOList = new ArrayList<>();
+    private List<FarmDTO> toDTO(List<Farm> farmList) {
+        List<FarmDTO> farmDTOList = new ArrayList<>();
 
-		for (Farm farm : farmList) {
-			farmDTOList.add(toDTO(farm));
-		}
+        for (Farm farm : farmList) {
+            farmDTOList.add(toDTO(farm));
+        }
 
-		return farmDTOList;
-	}
+        return farmDTOList;
+    }
 
-	private FarmDTO toDTO(Farm farm) {
-		PersistenceUtil persistenceUtil = Persistence.getPersistenceUtil();
+    private FarmDTO toDTO(Farm farm) {
+        PersistenceUtil persistenceUtil = Persistence.getPersistenceUtil();
 
-		FarmDTO farmDTO = new FarmDTO();
-		farmDTO.setName(farm.getName());
-		farmDTO.setCapacity(farm.getCapacity());
+        FarmDTO farmDTO = new FarmDTO();
+        farmDTO.setName(farm.getName());
+        farmDTO.setCapacity(farm.getCapacity());
 
-		if (persistenceUtil.isLoaded(farm.getLocation()) && farm.getLocation() != null) {
-			farmDTO.setLocationName(farm.getLocation().getName());
-		}
+        if (persistenceUtil.isLoaded(farm.getLocation()) && farm.getLocation() != null) {
+            farmDTO.setLocationName(farm.getLocation().getName());
+        }
 
-		if (persistenceUtil.isLoaded(farm.getFarmType()) && farm.getFarmType() != null) {
-			farmDTO.setFarmtypeName(farm.getFarmType().getName());
-		}
+        if (persistenceUtil.isLoaded(farm.getFarmType()) && farm.getFarmType() != null) {
+            farmDTO.setFarmtypeName(farm.getFarmType().getName());
+        }
 
-		return farmDTO;
-	}
+        return farmDTO;
+    }
 
-	public void create(FarmDTO farmDTO) {
-		Location location = locationRepository.findByName(farmDTO.getLocationName());
+    public void create(FarmDTO farmDTO) {
+        Location location = locationRepository.findByName(farmDTO.getLocationName());
 
-		if (location == null) {
-			throw new ObjectNotFoundException("Location '" + farmDTO.getLocationName() + "' not found");
-		}
+        if (location == null) {
+            throw new ObjectNotFoundException("Location '" + farmDTO.getLocationName() + "' not found");
+        }
 
-		FarmType farmType = farmTypeRepository.findByName(farmDTO.getFarmtypeName());
+        FarmType farmType = farmTypeRepository.findByName(farmDTO.getFarmtypeName());
 
-		if (farmType == null) {
-			throw new ObjectNotFoundException("FarmType '" + farmDTO.getFarmtypeName() + "' not found");
-		}
+        if (farmType == null) {
+            throw new ObjectNotFoundException("FarmType '" + farmDTO.getFarmtypeName() + "' not found");
+        }
 
-		Farm farm = new Farm(farmDTO.getName(), farmDTO.getCapacity(), location, farmType);
-		farmRepository.save(farm);
+        Farm farm = new Farm(farmDTO.getName(), farmDTO.getCapacity(), location, farmType);
+        farmRepository.save(farm);
 
-		for (FarmIPDTO farmIPDTO : farmDTO.getFarmipList()) {
-			farmIPService.create(farmIPDTO, farm);
-		}
-	}
+        for (FarmIPDTO farmIPDTO : farmDTO.getFarmipList()) {
+            farmIPService.create(farmIPDTO, farm);
+        }
+    }
 
-	public void update(FarmDTO farmDTO, String farmName) {
-		Farm farm = farmRepository.findWithLocationAndFarmTypeByName(farmName);
+    public void update(FarmDTO farmDTO, String farmName) {
+        Farm farm = farmRepository.findWithLocationAndFarmTypeByName(farmName);
 
-		if (farm == null) {
-			throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
-		}
+        if (farm == null) {
+            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+        }
 
-		if (farmDTO.getLocationName() != null) {
-			Location location = locationRepository.findByName(farmDTO.getLocationName());
+        if (farmDTO.getLocationName() != null) {
+            Location location = locationRepository.findByName(farmDTO.getLocationName());
 
-			if (location == null) {
-				throw new ObjectNotFoundException("Location '" + farmDTO.getLocationName() + "' not found");
-			}
+            if (location == null) {
+                throw new ObjectNotFoundException("Location '" + farmDTO.getLocationName() + "' not found");
+            }
 
-			farm.setLocation(location);
-		}
+            farm.setLocation(location);
+        }
 
-		if (farmDTO.getFarmtypeName() != null) {
-			FarmType farmType = farmTypeRepository.findByName(farmDTO.getFarmtypeName());
+        if (farmDTO.getFarmtypeName() != null) {
+            FarmType farmType = farmTypeRepository.findByName(farmDTO.getFarmtypeName());
 
-			if (farmType == null) {
-				throw new ObjectNotFoundException("FarmType '" + farmDTO.getFarmtypeName() + "' not found");
-			}
+            if (farmType == null) {
+                throw new ObjectNotFoundException("FarmType '" + farmDTO.getFarmtypeName() + "' not found");
+            }
 
-			farm.setFarmType(farmType);
-		}
+            farm.setFarmType(farmType);
+        }
 
-		if (farmDTO.getName() != null) {
-			farm.setName(farmDTO.getName());
-		}
+        if (farmDTO.getName() != null) {
+            farm.setName(farmDTO.getName());
+        }
 
-		if (farmDTO.getCapacity() != null) {
-			farm.setCapacity(farmDTO.getCapacity());
-		}
-	}
+        if (farmDTO.getCapacity() != null) {
+            farm.setCapacity(farmDTO.getCapacity());
+        }
+    }
 
-	public void addIPNet(IPNetDTO ipNetDTO, String farmName) {
-		Farm farm = farmRepository.findByName(farmName);
+    public void addIPNet(IPNetDTO ipNetDTO, String farmName) {
+        Farm farm = farmRepository.findByName(farmName);
 
-		if (farm == null) {
-			throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
-		}
+        if (farm == null) {
+            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+        }
 
-		IPNet ipNet = ipNetRepository.findByNet(new Inet(ipNetDTO.getNetAddress()));
+        IPNet ipNet = ipNetRepository.findByNet(new Inet(ipNetDTO.getNetAddress()));
 
-		if (ipNet == null) {
-			throw new ObjectNotFoundException("IPNet '" + ipNetDTO.getNetAddress() + "' not found");
-		}
+        if (ipNet == null) {
+            throw new ObjectNotFoundException("IPNet '" + ipNetDTO.getNetAddress() + "' not found");
+        }
 
-		farm.getIpNetSet().add(ipNet);
-	}
+        farm.getIpNetSet().add(ipNet);
+    }
 
-	public void removeIPNet(String netAddress, String farmName) {
-		Farm farm = farmRepository.findByName(farmName);
+    public void removeIPNet(String netAddress, String farmName) {
+        Farm farm = farmRepository.findByName(farmName);
 
-		if (farm == null) {
-			throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
-		}
+        if (farm == null) {
+            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+        }
 
-		IPNet ipNet = ipNetRepository.findByNet(new Inet(netAddress));
+        IPNet ipNet = ipNetRepository.findByNet(new Inet(netAddress));
 
-		if (ipNet == null) {
-			throw new ObjectNotFoundException("IPNet '" + netAddress + "' not found");
-		}
+        if (ipNet == null) {
+            throw new ObjectNotFoundException("IPNet '" + netAddress + "' not found");
+        }
 
-		farm.getIpNetSet().remove(ipNet);
-	}
+        farm.getIpNetSet().remove(ipNet);
+    }
 }

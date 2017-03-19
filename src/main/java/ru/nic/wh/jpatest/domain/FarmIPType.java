@@ -9,22 +9,22 @@ import javax.persistence.*;
 @Table(name = "farmip_type")
 public class FarmIPType {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "farmip_type_gen")
-	@SequenceGenerator(name = "farmip_type_gen", sequenceName = "farmip_type_id_seq", allocationSize = 1)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "farmip_type_gen")
+    @SequenceGenerator(name = "farmip_type_gen", sequenceName = "farmip_type_id_seq", allocationSize = 1)
+    private Long id;
 
-	@Column(name = "name")
-	private String name;
+    @Column(name = "name")
+    private String name;
 
-	@Column(name = "required")
-	private Boolean required;
+    @Column(name = "required")
+    private Boolean required;
 
-	protected FarmIPType() {
-	}
+    protected FarmIPType() {
+    }
 
-	public FarmIPType(String name, Boolean required) {
-		this.name = name;
-		this.required = required;
-	}
+    public FarmIPType(String name, Boolean required) {
+        this.name = name;
+        this.required = required;
+    }
 }

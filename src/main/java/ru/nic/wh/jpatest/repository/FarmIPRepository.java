@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface FarmIPRepository extends CrudRepository<FarmIP, Long> {
 
-	@Query("select f from FarmIP f where f.ip = :ip")
-	FarmIP findByIp(@Param("ip") Inet ip);
+    @Query("select f from FarmIP f where f.ip = :ip")
+    FarmIP findByIp(@Param("ip") Inet ip);
 
-	@Query("select f from FarmIP f left join fetch f.farmipType where f.farm.id = :farmId")
-	List<FarmIP> findWithFarmIPTypeByFarmId(@Param("farmId") Long farmId);
+    @Query("select f from FarmIP f left join fetch f.farmipType where f.farm.id = :farmId")
+    List<FarmIP> findWithFarmIPTypeByFarmId(@Param("farmId") Long farmId);
 }

@@ -11,13 +11,13 @@ import ru.nic.wh.jpatest.domain.Farm;
 @Repository
 public interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
 
-	@Query("select f from Farm f where f.name = :name")
-	Farm findByName(@Param("name") String name);
+    @Query("select f from Farm f where f.name = :name")
+    Farm findByName(@Param("name") String name);
 
-	@Query(value = "select f from Farm f left join fetch f.location l left join fetch f.farmType ft",
-			countQuery = "select count (f) from Farm f left join f.location l left join f.farmType ft")
-	Page<Farm> findAllWithLocationAndFarmType(Pageable pageable);
+    @Query(value = "select f from Farm f left join fetch f.location l left join fetch f.farmType ft",
+            countQuery = "select count (f) from Farm f left join f.location l left join f.farmType ft")
+    Page<Farm> findAllWithLocationAndFarmType(Pageable pageable);
 
-	@Query("select f from Farm f left join fetch f.location l left join fetch f.farmType ft where f.name = :name")
-	Farm findWithLocationAndFarmTypeByName(@Param("name") String name);
+    @Query("select f from Farm f left join fetch f.location l left join fetch f.farmType ft where f.name = :name")
+    Farm findWithLocationAndFarmTypeByName(@Param("name") String name);
 }

@@ -9,18 +9,18 @@ import javax.persistence.*;
 @Table(name = "location")
 public class Location {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "location_gen")
-	@SequenceGenerator(name = "location_gen", sequenceName = "location_id_seq", allocationSize = 1)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "location_gen")
+    @SequenceGenerator(name = "location_gen", sequenceName = "location_id_seq", allocationSize = 1)
+    private Long id;
 
-	@Column(name = "name")
-	private String name;
+    @Column(name = "name")
+    private String name;
 
-	protected Location() {
-	}
+    protected Location() {
+    }
 
-	public Location(String name) {
-		this.name = name;
-	}
+    public Location(String name) {
+        this.name = name;
+    }
 }

@@ -9,6 +9,6 @@ import ru.nic.wh.jpatest.domain.FarmIPType;
 @Repository
 public interface FarmIPTypeRepository extends CrudRepository<FarmIPType, Long> {
 
-	@Query("select f from FarmIPType f where f.name = :typename")
-	FarmIPType findByName(@Param("typename") String name);
+    @Query("select f from FarmIPType f where f.name = :typename")
+    FarmIPType findByName(@Param("typename") String name);
 }

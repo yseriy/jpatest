@@ -17,59 +17,59 @@ import java.util.List;
 @RestController
 public class FarmController {
 
-	private final FarmService farmService;
-	private final FarmIPService farmIPService;
+    private final FarmService farmService;
+    private final FarmIPService farmIPService;
 
-	public FarmController(FarmService farmService, FarmIPService farmIPService) {
-		this.farmService = farmService;
-		this.farmIPService = farmIPService;
-	}
+    public FarmController(FarmService farmService, FarmIPService farmIPService) {
+        this.farmService = farmService;
+        this.farmIPService = farmIPService;
+    }
 
-	@GetMapping("/farms")
-	public Page<FarmDTO> listFarm(Pageable pageable) {
-		return farmService.list(pageable);
-	}
+    @GetMapping("/farms")
+    public Page<FarmDTO> listFarm(Pageable pageable) {
+        return farmService.list(pageable);
+    }
 
-	@GetMapping("/farms/{farmName}")
-	public FarmDTO listFarmByName(@PathVariable String farmName) {
-		return farmService.listByName(farmName);
-	}
+    @GetMapping("/farms/{farmName}")
+    public FarmDTO listFarmByName(@PathVariable String farmName) {
+        return farmService.listByName(farmName);
+    }
 
-	@PostMapping("/farms")
-	@ResponseStatus(HttpStatus.CREATED)
-	public void addFarm(@Validated(NotNullGroup.class) @RequestBody FarmDTO farmDTO) {
-		farmService.create(farmDTO);
-	}
+    @PostMapping("/farms")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addFarm(@Validated(NotNullGroup.class) @RequestBody FarmDTO farmDTO) {
+        farmService.create(farmDTO);
+    }
 
-	@PutMapping("/farms/{farmName}")
-	@ResponseStatus(HttpStatus.CREATED)
-	public void updateFarm(@Validated @RequestBody FarmDTO farmDTO, @PathVariable String farmName) {
-		farmService.update(farmDTO, farmName);
-	}
+    @PutMapping("/farms/{farmName}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void updateFarm(@Validated @RequestBody FarmDTO farmDTO, @PathVariable String farmName) {
+        farmService.update(farmDTO, farmName);
+    }
 
-	@GetMapping("/farms/{farmName}/ip")
-	public List<FarmIPDTO> listFarmIp(@PathVariable String farmName) {
-		return farmIPService.listByFarmName(farmName);
-	}
+    @GetMapping("/farms/{farmName}/ip")
+    public List<FarmIPDTO> listFarmIp(@PathVariable String farmName) {
+        return farmIPService.listByFarmName(farmName);
+    }
 
-	@PostMapping("/farms/{farmName}/ip")
-	@ResponseStatus(HttpStatus.CREATED)
-	public void addIP(@Validated(NotNullGroup.class) @RequestBody FarmIPDTO farmIPDTO, @PathVariable String farmName) {
-		farmIPService.create(farmIPDTO, farmName);
-	}
+    @PostMapping("/farms/{farmName}/ip")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addIP(@Validated(NotNullGroup.class) @RequestBody FarmIPDTO farmIPDTO, @PathVariable String farmName) {
+        farmIPService.create(farmIPDTO, farmName);
+    }
 
-	@PostMapping("/farms/{farmName}/ipnet")
-	public void addIPNet(@Validated @RequestBody IPNetDTO ipNetDTO, @PathVariable String farmName) {
-		farmService.addIPNet(ipNetDTO, farmName);
-	}
+    @PostMapping("/farms/{farmName}/ipnet")
+    public void addIPNet(@Validated @RequestBody IPNetDTO ipNetDTO, @PathVariable String farmName) {
+        farmService.addIPNet(ipNetDTO, farmName);
+    }
 
-	@DeleteMapping("/farms/{farmName}/ipnet/{netAddress:.+}")
-	public void removeIPNet(@PathVariable String netAddress, @PathVariable String farmName) {
-		farmService.removeIPNet(netAddress, farmName);
-	}
+    @DeleteMapping("/farms/{farmName}/ipnet/{netAddress:.+}")
+    public void removeIPNet(@PathVariable String netAddress, @PathVariable String farmName) {
+        farmService.removeIPNet(netAddress, farmName);
+    }
 
-	@DeleteMapping("/farms/{farmName}/ip/{ipAddress:.+}")
-	public void removeIP(@PathVariable String farmName, @PathVariable String ipAddress) {
-		farmIPService.delete(ipAddress);
-	}
+    @DeleteMapping("/farms/{farmName}/ip/{ipAddress:.+}")
+    public void removeIP(@PathVariable String farmName, @PathVariable String ipAddress) {
+        farmIPService.delete(ipAddress);
+    }
 }

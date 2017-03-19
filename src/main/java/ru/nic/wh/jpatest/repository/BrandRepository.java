@@ -9,6 +9,6 @@ import ru.nic.wh.jpatest.domain.Brand;
 @Repository
 public interface BrandRepository extends CrudRepository<Brand, Long> {
 
-	@Query("select b from Brand b where b.name = :name")
-	Brand findByName(@Param("name") String name);
+    @Query("select b from Brand b where b.name = :name")
+    Brand findByName(@Param("name") String name);
 }

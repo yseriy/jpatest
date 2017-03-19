@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BrandDTO {
 
-	@Size(min = 1)
-	@NotNull(groups = NotNullClass.class)
-	private String name;
+    @Size(min = 1)
+    @NotNull(groups = NotNullClass.class)
+    private String name;
 }

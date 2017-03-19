@@ -24,128 +24,128 @@ import java.util.List;
 @Transactional
 public class FarmIPService {
 
-	private final FarmIPRepository farmipRepository;
-	private final FarmIPTypeRepository farmIPTypeRepository;
-	private final FarmRepository farmRepository;
-	private final BrandRepository brandRepository;
+    private final FarmIPRepository farmipRepository;
+    private final FarmIPTypeRepository farmIPTypeRepository;
+    private final FarmRepository farmRepository;
+    private final BrandRepository brandRepository;
 
-	public FarmIPService(FarmIPRepository farmipRepository, FarmIPTypeRepository farmIPTypeRepository,
-						 FarmRepository farmRepository, BrandRepository brandRepository) {
+    public FarmIPService(FarmIPRepository farmipRepository, FarmIPTypeRepository farmIPTypeRepository,
+                         FarmRepository farmRepository, BrandRepository brandRepository) {
 
-		this.farmipRepository = farmipRepository;
-		this.farmIPTypeRepository = farmIPTypeRepository;
-		this.farmRepository = farmRepository;
-		this.brandRepository = brandRepository;
-	}
+        this.farmipRepository = farmipRepository;
+        this.farmIPTypeRepository = farmIPTypeRepository;
+        this.farmRepository = farmRepository;
+        this.brandRepository = brandRepository;
+    }
 
-	public List<FarmIPDTO> listByFarmName(String farmName) {
-		PersistenceUtil persistenceUtil = Persistence.getPersistenceUtil();
-		Farm farm = farmRepository.findByName(farmName);
+    public List<FarmIPDTO> listByFarmName(String farmName) {
+        PersistenceUtil persistenceUtil = Persistence.getPersistenceUtil();
+        Farm farm = farmRepository.findByName(farmName);
 
-		if (farm == null) {
-			throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
-		}
+        if (farm == null) {
+            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+        }
 
-		List<FarmIPDTO> farmIPDTOList = new ArrayList<>();
-		List<FarmIP> farmIPList = farmipRepository.findWithFarmIPTypeByFarmId(farm.getId());
+        List<FarmIPDTO> farmIPDTOList = new ArrayList<>();
+        List<FarmIP> farmIPList = farmipRepository.findWithFarmIPTypeByFarmId(farm.getId());
 
-		for (FarmIP farmIP : farmIPList) {
-			FarmIPDTO farmIPDTO = new FarmIPDTO();
-			farmIPDTO.setIp(farmIP.getIp().getAddress());
+        for (FarmIP farmIP : farmIPList) {
+            FarmIPDTO farmIPDTO = new FarmIPDTO();
+            farmIPDTO.setIp(farmIP.getIp().getAddress());
 
-			if (persistenceUtil.isLoaded(farmIP.getFarmipType()) && farmIP.getFarmipType() != null) {
-				farmIPDTO.setFarmIpTypeName(farmIP.getFarmipType().getName());
-			}
+            if (persistenceUtil.isLoaded(farmIP.getFarmipType()) && farmIP.getFarmipType() != null) {
+                farmIPDTO.setFarmIpTypeName(farmIP.getFarmipType().getName());
+            }
 
-			if (persistenceUtil.isLoaded(farmIP.getBrandList()) && farmIP.getBrandList() != null) {
-				farmIPDTO.setBrandList(setBrandDTOList(farmIP.getBrandList()));
-			}
+            if (persistenceUtil.isLoaded(farmIP.getBrandList()) && farmIP.getBrandList() != null) {
+                farmIPDTO.setBrandList(setBrandDTOList(farmIP.getBrandList()));
+            }
 
-			farmIPDTOList.add(farmIPDTO);
-		}
+            farmIPDTOList.add(farmIPDTO);
+        }
 
-		return farmIPDTOList;
-	}
+        return farmIPDTOList;
+    }
 
-	private List<BrandDTO> setBrandDTOList(List<Brand> brandList) {
-		List<BrandDTO> brandDTOList = new ArrayList<>();
+    private List<BrandDTO> setBrandDTOList(List<Brand> brandList) {
+        List<BrandDTO> brandDTOList = new ArrayList<>();
 
-		for (Brand brand : brandList) {
-			BrandDTO brandDTO = new BrandDTO();
-			brandDTO.setName(brand.getName());
-			brandDTOList.add(brandDTO);
-		}
+        for (Brand brand : brandList) {
+            BrandDTO brandDTO = new BrandDTO();
+            brandDTO.setName(brand.getName());
+            brandDTOList.add(brandDTO);
+        }
 
-		return brandDTOList;
-	}
+        return brandDTOList;
+    }
 
-	public void create(FarmIPDTO farmIPDTO, String farmName) {
-		Farm farm = farmRepository.findByName(farmName);
+    public void create(FarmIPDTO farmIPDTO, String farmName) {
+        Farm farm = farmRepository.findByName(farmName);
 
-		if (farm == null) {
-			throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
-		}
+        if (farm == null) {
+            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+        }
 
-		create(farmIPDTO, farm);
-	}
+        create(farmIPDTO, farm);
+    }
 
-	void create(FarmIPDTO farmIPDTO, Farm farm) {
+    void create(FarmIPDTO farmIPDTO, Farm farm) {
 
-		FarmIPType farmIPType = farmIPTypeRepository.findByName(farmIPDTO.getFarmIpTypeName());
+        FarmIPType farmIPType = farmIPTypeRepository.findByName(farmIPDTO.getFarmIpTypeName());
 
-		if (farmIPType == null) {
-			throw new ObjectNotFoundException("FarmType '" + farmIPDTO.getFarmIpTypeName() + "' not found");
-		}
+        if (farmIPType == null) {
+            throw new ObjectNotFoundException("FarmType '" + farmIPDTO.getFarmIpTypeName() + "' not found");
+        }
 
-		FarmIP farmIP = new FarmIP(farmIPDTO.getIp(), farmIPType, farm);
-		setBrand(farmIP, farmIPDTO.getBrandList());
+        FarmIP farmIP = new FarmIP(farmIPDTO.getIp(), farmIPType, farm);
+        setBrand(farmIP, farmIPDTO.getBrandList());
 
-		farmipRepository.save(farmIP);
-	}
+        farmipRepository.save(farmIP);
+    }
 
-	private void setBrand(FarmIP farmIP, List<BrandDTO> brandDTOList) {
-		for (BrandDTO brandDTO : brandDTOList) {
-			Brand brand = brandRepository.findByName(brandDTO.getName());
+    private void setBrand(FarmIP farmIP, List<BrandDTO> brandDTOList) {
+        for (BrandDTO brandDTO : brandDTOList) {
+            Brand brand = brandRepository.findByName(brandDTO.getName());
 
-			if (brand == null) {
-				throw new ObjectNotFoundException("Brand '" + brandDTO.getName() + "' not found");
-			}
+            if (brand == null) {
+                throw new ObjectNotFoundException("Brand '" + brandDTO.getName() + "' not found");
+            }
 
-			farmIP.addBrand(brand);
-		}
-	}
+            farmIP.addBrand(brand);
+        }
+    }
 
-	public void update(FarmIPDTO farmIPDTO, String ipAddress) {
-		FarmIP farmIP = farmipRepository.findByIp(new Inet(ipAddress));
+    public void update(FarmIPDTO farmIPDTO, String ipAddress) {
+        FarmIP farmIP = farmipRepository.findByIp(new Inet(ipAddress));
 
-		if (farmIP == null) {
-			throw new ObjectNotFoundException("FarmIP '" + ipAddress + "' not found");
-		}
+        if (farmIP == null) {
+            throw new ObjectNotFoundException("FarmIP '" + ipAddress + "' not found");
+        }
 
-		if (farmIPDTO.getFarmIpTypeName() != null) {
-			FarmIPType farmIPType = farmIPTypeRepository.findByName(farmIPDTO.getFarmIpTypeName());
+        if (farmIPDTO.getFarmIpTypeName() != null) {
+            FarmIPType farmIPType = farmIPTypeRepository.findByName(farmIPDTO.getFarmIpTypeName());
 
-			if (farmIPType == null) {
-				throw new ObjectNotFoundException("FarmType '" + farmIPDTO.getFarmIpTypeName() + "' not found");
-			}
+            if (farmIPType == null) {
+                throw new ObjectNotFoundException("FarmType '" + farmIPDTO.getFarmIpTypeName() + "' not found");
+            }
 
-			farmIP.setFarmipType(farmIPType);
-		}
+            farmIP.setFarmipType(farmIPType);
+        }
 
-		if (farmIPDTO.getIp() != null) {
-			farmIP.setIp(new Inet(farmIPDTO.getIp()));
-		}
+        if (farmIPDTO.getIp() != null) {
+            farmIP.setIp(new Inet(farmIPDTO.getIp()));
+        }
 
-		farmipRepository.save(farmIP);
-	}
+        farmipRepository.save(farmIP);
+    }
 
-	public void delete(String ipAddress) {
-		FarmIP farmIP = farmipRepository.findByIp(new Inet(ipAddress));
+    public void delete(String ipAddress) {
+        FarmIP farmIP = farmipRepository.findByIp(new Inet(ipAddress));
 
-		if (farmIP == null) {
-			throw new ObjectNotFoundException("FarmIP '" + ipAddress + "' not found");
-		}
+        if (farmIP == null) {
+            throw new ObjectNotFoundException("FarmIP '" + ipAddress + "' not found");
+        }
 
-		farmipRepository.delete(farmIP);
-	}
+        farmipRepository.delete(farmIP);
+    }
 }

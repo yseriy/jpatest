@@ -9,6 +9,6 @@ import ru.nic.wh.jpatest.domain.Location;
 @Repository
 public interface LocationRepository extends CrudRepository<Location, Long> {
 
-	@Query("select l from Location l where l.name = :name")
-	Location findByName(@Param("name") String name);
+    @Query("select l from Location l where l.name = :name")
+    Location findByName(@Param("name") String name);
 }

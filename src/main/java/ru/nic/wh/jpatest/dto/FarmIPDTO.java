@@ -13,15 +13,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FarmIPDTO {
 
-	@NotNull(groups = NotNullClass.class)
-	private String ip;
+    @NotNull(groups = NotNullClass.class)
+    private String ip;
 
-	@Size(min = 1)
-	@NotNull(groups = NotNullClass.class)
-	private String farmIpTypeName;
+    @Size(min = 1)
+    @NotNull(groups = NotNullClass.class)
+    private String farmIpTypeName;
 
-	@Valid
-	@Size(min = 1)
-	@NotNull(groups = NotNullClass.class)
-	private List<BrandDTO> brandList;
+    @Valid
+    @Size(min = 1)
+    @NotNull(groups = NotNullClass.class)
+    private List<BrandDTO> brandList;
 }

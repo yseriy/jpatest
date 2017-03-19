@@ -8,18 +8,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "brand")
 public class Brand {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "brand_gen")
-	@SequenceGenerator(name = "brand_gen", sequenceName = "brand_id_seq", allocationSize = 1)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "brand_gen")
+    @SequenceGenerator(name = "brand_gen", sequenceName = "brand_id_seq", allocationSize = 1)
+    private Long id;
 
-	@Column(name = "name")
-	private String name;
+    @Column(name = "name")
+    private String name;
 
-	protected Brand() {
-	}
+    protected Brand() {
+    }
 
-	public Brand(String name) {
-		this.name = name;
-	}
+    public Brand(String name) {
+        this.name = name;
+    }
 }

@@ -14,24 +14,24 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FarmDTO {
 
-	@Size(min = 1)
-	@NotNull(groups = NotNullClass.class)
-	private String name;
+    @Size(min = 1)
+    @NotNull(groups = NotNullClass.class)
+    private String name;
 
-	@Min(1)
-	@NotNull(groups = NotNullClass.class)
-	private Integer capacity;
+    @Min(1)
+    @NotNull(groups = NotNullClass.class)
+    private Integer capacity;
 
-	@Size(min = 1)
-	@NotNull(groups = NotNullClass.class)
-	private String locationName;
+    @Size(min = 1)
+    @NotNull(groups = NotNullClass.class)
+    private String locationName;
 
-	@Size(min = 1)
-	@NotNull(groups = NotNullClass.class)
-	private String farmtypeName;
+    @Size(min = 1)
+    @NotNull(groups = NotNullClass.class)
+    private String farmtypeName;
 
-	@Valid
-	@Size(min = 1)
-	@NotNull(groups = NotNullClass.class)
-	private List<FarmIPDTO> farmipList;
+    @Valid
+    @Size(min = 1)
+    @NotNull(groups = NotNullClass.class)
+    private List<FarmIPDTO> farmipList;
 }

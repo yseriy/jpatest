@@ -9,6 +9,6 @@ import ru.nic.wh.jpatest.domain.FarmType;
 @Repository
 public interface FarmTypeRepository extends CrudRepository<FarmType, Long> {
 
-	@Query("select ft from FarmType ft where ft.name = :name")
-	FarmType findByName(@Param("name") String name);
+    @Query("select ft from FarmType ft where ft.name = :name")
+    FarmType findByName(@Param("name") String name);
 }
