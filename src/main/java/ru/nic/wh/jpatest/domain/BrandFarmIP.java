@@ -27,4 +27,24 @@ public class BrandFarmIP {
         this.brand = brand;
         this.farmIP = farmIP;
     }
+
+    @Override
+    public String toString() {
+        return "BrandFarmIP{id=" + id + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BrandFarmIP that = (BrandFarmIP) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

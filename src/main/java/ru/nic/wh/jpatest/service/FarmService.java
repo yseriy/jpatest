@@ -5,15 +5,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.nic.wh.jpatest.domain.Farm;
-import ru.nic.wh.jpatest.domain.FarmType;
-import ru.nic.wh.jpatest.domain.IPNet;
-import ru.nic.wh.jpatest.domain.Location;
+import ru.nic.wh.jpatest.domain.*;
+import ru.nic.wh.jpatest.dto.BrandDTO;
 import ru.nic.wh.jpatest.dto.FarmDTO;
 import ru.nic.wh.jpatest.dto.FarmIPDTO;
-import ru.nic.wh.jpatest.dto.IPNetDTO;
 import ru.nic.wh.jpatest.exception.ObjectNotFoundException;
-import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
 import ru.nic.wh.jpatest.repository.FarmRepository;
 import ru.nic.wh.jpatest.repository.FarmTypeRepository;
 import ru.nic.wh.jpatest.repository.IPNetRepository;
@@ -23,6 +19,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -52,7 +49,7 @@ public class FarmService {
     }
 
     public FarmDTO listByName(String farmName) {
-        Farm farm = farmRepository.findWithLocationAndFarmTypeByName(farmName);
+        Farm farm = farmRepository.findByNameFullFetch(farmName);
 
         if (farm == null) {
             throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
@@ -78,15 +75,45 @@ public class FarmService {
         farmDTO.setName(farm.getName());
         farmDTO.setCapacity(farm.getCapacity());
 
-        if (persistenceUtil.isLoaded(farm.getLocation()) && farm.getLocation() != null) {
+        if (persistenceUtil.isLoaded(farm.getLocation())) {
             farmDTO.setLocationName(farm.getLocation().getName());
         }
 
-        if (persistenceUtil.isLoaded(farm.getFarmType()) && farm.getFarmType() != null) {
+        if (persistenceUtil.isLoaded(farm.getFarmType())) {
             farmDTO.setFarmtypeName(farm.getFarmType().getName());
         }
 
+        if (persistenceUtil.isLoaded(farm.getFarmIPList())) {
+            setFarmIPListToDTO(farmDTO, farm.getFarmIPList());
+        }
+
         return farmDTO;
+    }
+
+    private void setFarmIPListToDTO(FarmDTO farmDTO, Set<FarmIP> farmIPList) {
+        List<FarmIPDTO> farmIPDTOList = new ArrayList<>();
+
+        for (FarmIP farmIP : farmIPList) {
+            FarmIPDTO farmIPDTO = new FarmIPDTO();
+            farmIPDTO.setIp(farmIP.getIp().getAddress());
+            farmIPDTO.setFarmIpTypeName(farmIP.getFarmipType().getName());
+            setBrandListToDTO(farmIPDTO, farmIP.getBrandFarmIPList());
+            farmIPDTOList.add(farmIPDTO);
+        }
+
+        farmDTO.setFarmipList(farmIPDTOList);
+    }
+
+    private void setBrandListToDTO(FarmIPDTO farmIPDTO, Set<BrandFarmIP> brandFarmIPList) {
+        List<BrandDTO> brandDTOList = new ArrayList<>();
+
+        for (BrandFarmIP brandFarmIP : brandFarmIPList) {
+            BrandDTO brandDTO = new BrandDTO();
+            brandDTO.setName(brandFarmIP.getBrand().getName());
+            brandDTOList.add(brandDTO);
+        }
+
+        farmIPDTO.setBrandList(brandDTOList);
     }
 
     public void create(FarmDTO farmDTO) {
@@ -111,7 +138,7 @@ public class FarmService {
     }
 
     public void update(FarmDTO farmDTO, String farmName) {
-        Farm farm = farmRepository.findWithLocationAndFarmTypeByName(farmName);
+        Farm farm = farmRepository.findByNameFullFetch(farmName);
 
         if (farm == null) {
             throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
@@ -144,6 +171,20 @@ public class FarmService {
         if (farmDTO.getCapacity() != null) {
             farm.setCapacity(farmDTO.getCapacity());
         }
+    }
+
+    public void addIP(FarmIPDTO farmIPDTO, String farmName) {
+        Farm farm = farmRepository.findByName(farmName);
+
+        if (farm == null) {
+            throw new ObjectNotFoundException("Farm '" + farmName + "' not found");
+        }
+
+        farmIPService.create(farmIPDTO, farm);
+    }
+
+    public void removeIP(String ipAddress) {
+        farmIPService.delete(ipAddress);
     }
 
 //    public void addIPNet(IPNetDTO ipNetDTO, String farmName) {

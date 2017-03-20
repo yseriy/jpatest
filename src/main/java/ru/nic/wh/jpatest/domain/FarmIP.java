@@ -5,8 +5,8 @@ import org.hibernate.annotations.Type;
 import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -31,7 +31,7 @@ public class FarmIP {
     private Farm farm;
 
     @OneToMany(mappedBy = "farmIP", cascade = CascadeType.PERSIST)
-    private List<BrandFarmIP> brandFarmIPList = new ArrayList<>();
+    private Set<BrandFarmIP> brandFarmIPList = new HashSet<>();
 
     protected FarmIP() {
     }
@@ -45,5 +45,28 @@ public class FarmIP {
     public void addBrand(Brand brand) {
         BrandFarmIP brandFarmIP = new BrandFarmIP(brand, this);
         brandFarmIPList.add(brandFarmIP);
+    }
+
+    @Override
+    public String toString() {
+        return "FarmIP{id=" + id + ", ip=" + ip.getAddress() + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FarmIP farmIP = (FarmIP) o;
+
+        if (!id.equals(farmIP.id)) return false;
+        return ip.equals(farmIP.ip);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + ip.hashCode();
+        return result;
     }
 }
