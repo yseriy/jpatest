@@ -19,12 +19,12 @@ public interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
     Page<Farm> findAllWithLocationAndFarmType(Pageable pageable);
 
     @Query("select f from Farm f " +
-            "left join fetch f.location l " +
-            "left join fetch f.farmType ft " +
-            "left join fetch f.farmIPList fil " +
-            "left join fetch fil.farmipType " +
-            "left join fetch fil.brandFarmIPList bfl " +
-            "left join fetch bfl.brand " +
-            "where f.name = :name")
+           "left join fetch f.location l " +
+           "left join fetch f.farmType ft " +
+           "left join fetch f.farmIPList fil " +
+           "left join fetch fil.farmipType " +
+           "left join fetch fil.brandFarmIPList bfl " +
+           "left join fetch bfl.brand " +
+           "where f.name = :name")
     Farm findByNameFullFetch(@Param("name") String name);
 }
