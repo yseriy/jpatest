@@ -3,7 +3,7 @@ package ru.nic.wh.jpatest.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -28,8 +28,8 @@ public class Farm {
     @JoinColumn(name = "farm_type_id")
     private FarmType farmType;
 
-    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL)
-    private List<FarmIP> farmIPList;
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.PERSIST)
+    private Set<FarmIP> farmIPList = new HashSet<>();
 
     protected Farm() {
     }
@@ -39,5 +39,28 @@ public class Farm {
         this.capacity = capacity;
         this.location = location;
         this.farmType = farmType;
+    }
+
+    @Override
+    public String toString() {
+        return "Farm{id=" + id + ", name='" + name + "'}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Farm farm = (Farm) o;
+
+        if (!id.equals(farm.id)) return false;
+        return name.equals(farm.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
     }
 }

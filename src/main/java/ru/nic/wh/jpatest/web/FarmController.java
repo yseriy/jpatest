@@ -47,17 +47,19 @@ public class FarmController {
         farmService.update(farmDTO, farmName);
     }
 
-    @GetMapping("/farms/{farmName}/ip")
-    public List<FarmIPDTO> listFarmIp(@PathVariable String farmName) {
-        return farmIPService.listByFarmName(farmName);
-    }
-
     @PostMapping("/farms/{farmName}/ip")
     @ResponseStatus(HttpStatus.CREATED)
     public void addIP(@Validated(NotNullGroup.class) @RequestBody FarmIPDTO farmIPDTO, @PathVariable String farmName) {
-        farmIPService.create(farmIPDTO, farmName);
+        farmService.addIP(farmIPDTO, farmName);
     }
 
+    @DeleteMapping("/farms/{farmName}/ip/{ipAddress:.+}")
+    public void removeIP(@PathVariable String farmName, @PathVariable String ipAddress) {
+        farmService.removeIP(ipAddress);
+    }
+    //    @GetMapping("/farms/{farmName}/ip")
+//    public List<FarmIPDTO> listFarmIp(@PathVariable String farmName) {
+//        return farmIPService.listByFarmName(farmName);
 //    @PostMapping("/farms/{farmName}/ipnet")
 //    public void addIPNet(@Validated @RequestBody IPNetDTO ipNetDTO, @PathVariable String farmName) {
 //        farmService.addIPNet(ipNetDTO, farmName);
@@ -66,10 +68,4 @@ public class FarmController {
 //    @DeleteMapping("/farms/{farmName}/ipnet/{netAddress:.+}")
 //    public void removeIPNet(@PathVariable String netAddress, @PathVariable String farmName) {
 //        farmService.removeIPNet(netAddress, farmName);
-//    }
-
-    @DeleteMapping("/farms/{farmName}/ip/{ipAddress:.+}")
-    public void removeIP(@PathVariable String farmName, @PathVariable String ipAddress) {
-        farmIPService.delete(ipAddress);
-    }
 }
