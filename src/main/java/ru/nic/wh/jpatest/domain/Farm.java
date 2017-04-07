@@ -1,12 +1,14 @@
 package ru.nic.wh.jpatest.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "farm")
 public class Farm {
@@ -43,7 +45,7 @@ public class Farm {
 
     @Override
     public String toString() {
-        return "Farm{id=" + id + ", name='" + name + "'}";
+        return "Farm{" + "name='" + name + '\'' + '}';
     }
 
     @Override
@@ -53,14 +55,11 @@ public class Farm {
 
         Farm farm = (Farm) o;
 
-        if (!id.equals(farm.id)) return false;
         return name.equals(farm.name);
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        return result;
+        return name.hashCode();
     }
 }

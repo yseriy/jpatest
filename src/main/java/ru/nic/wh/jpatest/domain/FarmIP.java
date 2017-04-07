@@ -1,6 +1,7 @@
 package ru.nic.wh.jpatest.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
 
@@ -8,7 +9,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "farmip")
 public class FarmIP {
@@ -19,7 +21,6 @@ public class FarmIP {
     private Long id;
 
     @Type(type = "ru.nic.wh.jpatest.miscellaneous.usertype.InetType")
-    @Column(name = "ip")
     private Inet ip;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,7 +50,7 @@ public class FarmIP {
 
     @Override
     public String toString() {
-        return "FarmIP{id=" + id + ", ip=" + ip.getAddress() + "}";
+        return "FarmIP{" + "ip=" + ip + '}';
     }
 
     @Override
@@ -59,14 +60,11 @@ public class FarmIP {
 
         FarmIP farmIP = (FarmIP) o;
 
-        if (!id.equals(farmIP.id)) return false;
         return ip.equals(farmIP.ip);
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + ip.hashCode();
-        return result;
+        return ip.hashCode();
     }
 }

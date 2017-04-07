@@ -14,5 +14,5 @@ public interface BrandIPNetRepository extends CrudRepository<BrandIPNet, Long> {
 
     @Modifying
     @Query("delete from BrandIPNet bi where bi.brand = :brand and bi.ipNet = :ipNet")
-    void DeleteBrandIPNetLink(@Param("brand") Brand brand, @Param("ipNet") IPNet ipNet);
+    void deleteBrandIPNetLink(@Param("brand") Brand brand, @Param("ipNet") IPNet ipNet);
 }

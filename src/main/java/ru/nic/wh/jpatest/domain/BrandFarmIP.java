@@ -1,10 +1,12 @@
 package ru.nic.wh.jpatest.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "brand_farmip")
 public class BrandFarmIP {
@@ -30,7 +32,7 @@ public class BrandFarmIP {
 
     @Override
     public String toString() {
-        return "BrandFarmIP{id=" + id + "}";
+        return "BrandFarmIP{" + "id=" + id + '}';
     }
 
     @Override
@@ -40,11 +42,11 @@ public class BrandFarmIP {
 
         BrandFarmIP that = (BrandFarmIP) o;
 
-        return id.equals(that.id);
+        return id != null ? id.equals(that.id) : that.id == null;
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return id != null ? id.hashCode() : 0;
     }
 }

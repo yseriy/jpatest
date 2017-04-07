@@ -1,10 +1,12 @@
 package ru.nic.wh.jpatest.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "brand_ipnet")
 public class BrandIPNet {
@@ -24,8 +26,29 @@ public class BrandIPNet {
     protected BrandIPNet() {
     }
 
-    BrandIPNet(Brand brand, IPNet ipNet) {
+    public BrandIPNet(Brand brand, IPNet ipNet) {
         this.brand = brand;
         this.ipNet = ipNet;
+    }
+
+    @Override
+    public String toString() {
+        System.out.println("P31");
+        return "BrandIPNet{" + "id=" + id + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BrandIPNet that = (BrandIPNet) o;
+
+        return id != null ? id.equals(that.id) : that.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

@@ -22,6 +22,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -42,7 +43,7 @@ public class IPNetService {
     }
 
     public Page<IPNetDTO> listAll(Pageable pageable) {
-        Page<IPNet> ipNetPage = ipNetRepository.findAllWithType(pageable);
+        Page<IPNet> ipNetPage = ipNetRepository.findAll(pageable);
 
         return new PageImpl<>(toDTO(ipNetPage.getContent()), pageable, ipNetPage.getTotalElements());
     }
@@ -84,7 +85,7 @@ public class IPNetService {
         return ipNetDTO;
     }
 
-    private void setBrandListToDTO(IPNetDTO ipNetDTO, List<BrandIPNet> brandIPNetList) {
+    private void setBrandListToDTO(IPNetDTO ipNetDTO, Set<BrandIPNet> brandIPNetList) {
         List<BrandDTO> brandDTOList = new ArrayList<>();
 
         for (BrandIPNet brandIPNet : brandIPNetList) {
@@ -119,7 +120,7 @@ public class IPNetService {
                 throw new ObjectNotFoundException("Brand '" + brandDTO.getName() + "' not found");
             }
 
-            ipNet.addBrand(brand);
+            brandIPNetRepository.save(new BrandIPNet(brand, ipNet));
         }
     }
 
@@ -158,7 +159,7 @@ public class IPNetService {
             throw new ObjectNotFoundException("Brand '" + brandDTO.getName() + "' not found");
         }
 
-        ipNet.addBrand(brand);
+        brandIPNetRepository.save(new BrandIPNet(brand, ipNet));
     }
 
     public void removeBrand(String netAddress, String brandName) {
@@ -174,6 +175,6 @@ public class IPNetService {
             throw new ObjectNotFoundException("Brand '" + brandName + "' not found");
         }
 
-        brandIPNetRepository.DeleteBrandIPNetLink(brand, ipNet);
+        brandIPNetRepository.deleteBrandIPNetLink(brand, ipNet);
     }
 }
