@@ -1,14 +1,16 @@
 package ru.nic.wh.jpatest.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import ru.nic.wh.jpatest.miscellaneous.usertype.Inet;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "ipnet")
 public class IPNet {
@@ -19,15 +21,14 @@ public class IPNet {
     private Long id;
 
     @Type(type = "ru.nic.wh.jpatest.miscellaneous.usertype.InetType")
-    @Column(name = "net")
     private Inet net;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ipnet_type_id")
     private IPNetType ipNetType;
 
-    @OneToMany(mappedBy = "ipNet", cascade = CascadeType.PERSIST)
-    private List<BrandIPNet> brandIPNetList = new ArrayList<>();
+    @OneToMany(mappedBy = "ipNet", cascade = CascadeType.ALL)
+    private Set<BrandIPNet> brandIPNetList = new HashSet<>();
 
     protected IPNet() {
     }
@@ -37,8 +38,23 @@ public class IPNet {
         this.ipNetType = ipNetType;
     }
 
-    public void addBrand(Brand brand) {
-        BrandIPNet brandIPNet = new BrandIPNet(brand, this);
-        brandIPNetList.add(brandIPNet);
+    @Override
+    public String toString() {
+        return "IPNet{" + "net=" + net + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IPNet ipNet = (IPNet) o;
+
+        return net.equals(ipNet.net);
+    }
+
+    @Override
+    public int hashCode() {
+        return net.hashCode();
     }
 }

@@ -1,10 +1,12 @@
 package ru.nic.wh.jpatest.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "ipnet_type")
 public class IPNetType {
@@ -14,10 +16,8 @@ public class IPNetType {
     @SequenceGenerator(name = "ipnet_type_gen", sequenceName = "ipnet_type_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "required")
     private Boolean required;
 
     protected IPNetType() {
@@ -26,5 +26,25 @@ public class IPNetType {
     public IPNetType(String name, Boolean required) {
         this.name = name;
         this.required = required;
+    }
+
+    @Override
+    public String toString() {
+        return "IPNetType{" + "name='" + name + '\'' + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IPNetType ipNetType = (IPNetType) o;
+
+        return name.equals(ipNetType.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }
