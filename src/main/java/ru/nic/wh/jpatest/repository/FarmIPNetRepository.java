@@ -13,6 +13,6 @@ import ru.nic.wh.jpatest.domain.IPNet;
 public interface FarmIPNetRepository extends CrudRepository<FarmIPNet, Long> {
 
     @Modifying
-    @Query("delete from FarmIPNet fi where fi.farm = : farm and fi.ipNet = :ipNet")
+    @Query("delete from FarmIPNet fi where fi.farm = :farm and fi.ipNet = :ipNet")
     void deleteByFarmAndIPNet(@Param("farm") Farm farm, @Param("ipNet") IPNet ipNet);
 }
