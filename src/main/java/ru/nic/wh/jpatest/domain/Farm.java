@@ -33,6 +33,9 @@ public class Farm {
     @OneToMany(mappedBy = "farm", cascade = CascadeType.PERSIST)
     private Set<FarmIP> farmIPList = new HashSet<>();
 
+    @OneToMany(mappedBy = "farm", cascade = CascadeType.PERSIST)
+    private Set<FarmIPNet> farmIPNetList = new HashSet<>();
+
     protected Farm() {
     }
 
