@@ -33,7 +33,6 @@ public class BrandIPNet {
 
     @Override
     public String toString() {
-        System.out.println("P31");
         return "BrandIPNet{" + "id=" + id + '}';
     }
 
