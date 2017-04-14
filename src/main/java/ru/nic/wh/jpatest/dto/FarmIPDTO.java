@@ -20,6 +20,8 @@ public class FarmIPDTO {
     @NotNull(groups = NotNullClass.class)
     private String farmIpTypeName;
 
+    private Boolean required;
+
     @Valid
     @Size(min = 1)
     @NotNull(groups = NotNullClass.class)

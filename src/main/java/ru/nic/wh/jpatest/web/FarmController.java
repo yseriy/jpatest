@@ -18,16 +18,14 @@ import java.util.List;
 public class FarmController {
 
     private final FarmService farmService;
-    private final FarmIPService farmIPService;
 
-    public FarmController(FarmService farmService, FarmIPService farmIPService) {
+    public FarmController(FarmService farmService) {
         this.farmService = farmService;
-        this.farmIPService = farmIPService;
     }
 
     @GetMapping("/farms")
-    public Page<FarmDTO> listFarm(Pageable pageable) {
-        return farmService.list(pageable);
+    public Page<String> listFarmsNames(Pageable pageable) {
+        return farmService.listFarmsNames(pageable);
     }
 
     @GetMapping("/farms/{farmName}")
@@ -57,10 +55,6 @@ public class FarmController {
     public void removeIP(@PathVariable String farmName, @PathVariable String ipAddress) {
         farmService.removeIP(ipAddress);
     }
-
-    //    @GetMapping("/farms/{farmName}/ip")
-//    public List<FarmIPDTO> listFarmIp(@PathVariable String farmName) {
-//        return farmIPService.listByFarmName(farmName);
 
     @PostMapping("/farms/{farmName}/ipnet")
     public void addIPNet(@Validated @RequestBody IPNetDTO ipNetDTO, @PathVariable String farmName) {
