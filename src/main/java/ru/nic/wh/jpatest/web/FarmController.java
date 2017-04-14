@@ -57,15 +57,18 @@ public class FarmController {
     public void removeIP(@PathVariable String farmName, @PathVariable String ipAddress) {
         farmService.removeIP(ipAddress);
     }
+
     //    @GetMapping("/farms/{farmName}/ip")
 //    public List<FarmIPDTO> listFarmIp(@PathVariable String farmName) {
 //        return farmIPService.listByFarmName(farmName);
-//    @PostMapping("/farms/{farmName}/ipnet")
-//    public void addIPNet(@Validated @RequestBody IPNetDTO ipNetDTO, @PathVariable String farmName) {
-//        farmService.addIPNet(ipNetDTO, farmName);
-//    }
-//
-//    @DeleteMapping("/farms/{farmName}/ipnet/{netAddress:.+}")
-//    public void removeIPNet(@PathVariable String netAddress, @PathVariable String farmName) {
-//        farmService.removeIPNet(netAddress, farmName);
+
+    @PostMapping("/farms/{farmName}/ipnet")
+    public void addIPNet(@Validated @RequestBody IPNetDTO ipNetDTO, @PathVariable String farmName) {
+        farmService.addIPNet(ipNetDTO, farmName);
+    }
+
+    @DeleteMapping("/farms/{farmName}/ipnet/{netAddress:.+}")
+    public void removeIPNet(@PathVariable String netAddress, @PathVariable String farmName) {
+        farmService.removeIPNet(netAddress, farmName);
+    }
 }
