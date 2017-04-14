@@ -59,6 +59,10 @@ public class FarmService {
         return toDTO(farm);
     }
 
+    public Page<String> listFarmsNames(Pageable pageable) {
+        return farmRepository.listFarmsName(pageable);
+    }
+
     private List<FarmDTO> toDTO(List<Farm> farmList) {
         List<FarmDTO> farmDTOList = new ArrayList<>();
 
@@ -73,7 +77,6 @@ public class FarmService {
         PersistenceUtil persistenceUtil = Persistence.getPersistenceUtil();
 
         FarmDTO farmDTO = new FarmDTO();
-        farmDTO.setName(farm.getName());
         farmDTO.setCapacity(farm.getCapacity());
 
         if (persistenceUtil.isLoaded(farm.getLocation())) {
@@ -88,6 +91,10 @@ public class FarmService {
             setFarmIPListToDTO(farmDTO, farm.getFarmIPList());
         }
 
+        if (persistenceUtil.isLoaded(farm.getFarmIPNetList())) {
+            setIPNetListToDTO(farmDTO, farm.getFarmIPNetList());
+        }
+
         return farmDTO;
     }
 
@@ -98,14 +105,15 @@ public class FarmService {
             FarmIPDTO farmIPDTO = new FarmIPDTO();
             farmIPDTO.setIp(farmIP.getIp().getAddress());
             farmIPDTO.setFarmIpTypeName(farmIP.getFarmipType().getName());
-            setBrandListToDTO(farmIPDTO, farmIP.getBrandFarmIPList());
+            farmIPDTO.setRequired(farmIP.getFarmipType().getRequired());
+            setBrandListToFarmIPDTO(farmIPDTO, farmIP.getBrandFarmIPList());
             farmIPDTOList.add(farmIPDTO);
         }
 
         farmDTO.setFarmipList(farmIPDTOList);
     }
 
-    private void setBrandListToDTO(FarmIPDTO farmIPDTO, Set<BrandFarmIP> brandFarmIPList) {
+    private void setBrandListToFarmIPDTO(FarmIPDTO farmIPDTO, Set<BrandFarmIP> brandFarmIPList) {
         List<BrandDTO> brandDTOList = new ArrayList<>();
 
         for (BrandFarmIP brandFarmIP : brandFarmIPList) {
@@ -115,6 +123,33 @@ public class FarmService {
         }
 
         farmIPDTO.setBrandList(brandDTOList);
+    }
+
+    private void setIPNetListToDTO(FarmDTO farmDTO, Set<FarmIPNet> farmIPNetList) {
+        List<IPNetDTO> ipNetDTOList = new ArrayList<>();
+
+        for (FarmIPNet farmIPNet : farmIPNetList) {
+            IPNetDTO ipNetDTO = new IPNetDTO();
+            ipNetDTO.setNetAddress(farmIPNet.getIpNet().getNet().getAddress());
+            ipNetDTO.setIpnetTypeName(farmIPNet.getIpNet().getIpNetType().getName());
+            ipNetDTO.setRequired(farmIPNet.getIpNet().getIpNetType().getRequired());
+            setBrandListToIPNetDTO(ipNetDTO, farmIPNet.getIpNet().getBrandIPNetList());
+            ipNetDTOList.add(ipNetDTO);
+        }
+
+        farmDTO.setIpnetList(ipNetDTOList);
+    }
+
+    private void setBrandListToIPNetDTO(IPNetDTO ipNetDTO, Set<BrandIPNet> brandIPNetList) {
+        List<BrandDTO> brandDTOList = new ArrayList<>();
+
+        for (BrandIPNet brandIPNet : brandIPNetList) {
+            BrandDTO brandDTO = new BrandDTO();
+            brandDTO.setName(brandIPNet.getBrand().getName());
+            brandDTOList.add(brandDTO);
+        }
+
+        ipNetDTO.setBrandList(brandDTOList);
     }
 
     public void create(FarmDTO farmDTO) {

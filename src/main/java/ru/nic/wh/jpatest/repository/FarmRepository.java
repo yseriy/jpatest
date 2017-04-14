@@ -11,6 +11,9 @@ import ru.nic.wh.jpatest.domain.Farm;
 @Repository
 public interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
 
+    @Query("select f.name from Farm f")
+    Page<String> listFarmsName(Pageable pageable);
+
     @Query("select f from Farm f where f.name = :name")
     Farm findByName(@Param("name") String name);
 
@@ -19,12 +22,17 @@ public interface FarmRepository extends PagingAndSortingRepository<Farm, Long> {
     Page<Farm> findAllWithLocationAndFarmType(Pageable pageable);
 
     @Query("select f from Farm f " +
-           "left join fetch f.location l " +
-           "left join fetch f.farmType ft " +
-           "left join fetch f.farmIPList fil " +
-           "left join fetch fil.farmipType " +
-           "left join fetch fil.brandFarmIPList bfl " +
-           "left join fetch bfl.brand " +
-           "where f.name = :name")
+            "left join fetch f.location l " +
+            "left join fetch f.farmType ft " +
+            "left join fetch f.farmIPList fil " +
+            "left join fetch fil.farmipType " +
+            "left join fetch fil.brandFarmIPList bfl " +
+            "left join fetch bfl.brand " +
+            "left join fetch f.farmIPNetList fnl " +
+            "left join fetch fnl.ipNet int " +
+            "left join fetch int.ipNetType " +
+            "left join fetch int.brandIPNetList bil " +
+            "left join fetch bil.brand " +
+            "where f.name = :name")
     Farm findByNameFullFetch(@Param("name") String name);
 }

@@ -2,6 +2,7 @@ package ru.nic.wh.jpatest.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import ru.nic.wh.jpatest.domain.IPNet;
 import ru.nic.wh.jpatest.miscellaneous.validationgroups.NotNullClass;
 
 import javax.validation.Valid;
@@ -34,4 +35,6 @@ public class FarmDTO {
     @Size(min = 1)
     @NotNull(groups = NotNullClass.class)
     private List<FarmIPDTO> farmipList;
+
+    private List<IPNetDTO> ipnetList;
 }
